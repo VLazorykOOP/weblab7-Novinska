@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Task Form</title>
+    <style>
+        h1, h2, h3, h4, h5, h6, b, i {
+            cursor: pointer;
+            user-select: none; 
+        }
+        .highlighted {
+            background-color: rgb(83, 11, 11);
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-top: 10px;
+        }
+        .image-container {
+            margin-left: 50px;
+            display: flex;
+        }
+        .image {
+            margin: 10px;
+            cursor: pointer;
+        }
+        .image:hover {
+            border: 2px solid rgb(83, 11, 11);
+        }
+        button {
+            padding: 5px;
+        }
+
+        #result {
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1 onclick="handleEvent(this)">Стильове оформлення</h1>
+    <h2 onclick="handleEvent(this)">Стильове оформлення</h2>
+    <h3 onclick="handleEvent(this)">Стильове оформлення</h3>
+    <h4 onclick="handleEvent(this)">Стильове оформлення</h4>
+    <h5 onclick="handleEvent(this)">Стильове оформлення</h5>
+    <b onclick="handleEvent(this)">Bold Text</b>
+    <i onclick="handleEvent(this)">Italic Text</i>
+    <h1>Run Task Form</h1>
+    <form id="runTaskForm">
+        <button type="button" onclick="runTask()">Run Task</button>
+        <textarea id="outputTextarea" readonly></textarea>
+        <form id="searchForm">
+            <label for="textInput">Enter text:</label>
+            <input type="text" id="textInput" required>
+            <button type="button" onclick="searchText()">Search Information</button>
+        </form>
+        <div id="result"></div>
+    </form>
+    <h1>Mouse Events Example</h1>
+    <div class="image-container">
+        <img src="istockphoto-1248729906-1024x1024.jpg" alt="Image 1" class="image" id="image1" width="500px" height="500px">
+        <img src="istockphoto-1177147179-1024x1024.jpg" alt="Image 2" class="image" id="image2" width="700px" height="500px">
+    </div>
+
+    <h1>Array Task</h1>
+    <form id="arrayTaskForm">
+        <button type="button" onclick="performArrayTask()">Array Task</button>
+        <textarea id="resultTextarea" readonly></textarea>
+    </form>
+
+    <script>
+        function handleEvent(element) {
+            alert('Event handled for: ' + element.tagName);
+
+            // Зміна стильового оформлення
+            element.classList.toggle('highlighted');
+        }
+
+        function handleDragStart(event) {
+            // Запуск при початку операції перетаскування
+            console.log('Drag start:', event.target.tagName);
+        }
+
+        function handleDragEnd(event) {
+            // Запуск після завершення операції перетаскування
+            console.log('Drag end:', event.target.tagName);
+        }
+        function runTask() {
+            var currentDate = new Date();
+            var timestamp = currentDate.toISOString();
+            var historyLog = localStorage.getItem('pageHistory') || '';
+            historyLog += timestamp + ' - Task executed\n';
+            document.getElementById('outputTextarea').value = historyLog;
+            console.log(historyLog);
+            alert('Task executed');
+        }
+
+        function savePageHistory() {
+            var currentDate = new Date();
+            var timestamp = currentDate.toISOString();
+            var historyLog = localStorage.getItem('pageHistory') || '';
+            historyLog += timestamp + ' - Page loaded\n';
+            localStorage.setItem('pageHistory', historyLog);
+        }
+        savePageHistory();
+        // Функція, яка викликається при натисканні на малюнок
+        function handleImageClick(imageId) {
+            alert('Image clicked: ' + imageId);
+
+        }
+
+        // Отримати всі елементи з класом "image"
+        var images = document.querySelectorAll('.image');
+
+        // Додати обробник події для кожного малюнку
+        images.forEach(function (image) {
+            image.addEventListener('click', function () {
+                // Отримати ідентифікатор малюнку з його id
+                var imageId = this.id;
+                // Викликати функцію обробки події
+                handleImageClick(imageId);
+            });
+        });
+//для пошуковго поля
+        function searchText() {
+            // Отримати введений текст
+            var inputText = document.getElementById('textInput').value;
+
+            // Визначити регулярний вираз для пошуку цифр
+            var digitRegex = /\d/g;
+
+            // Знайти всі цифри у введеному тексті
+            var foundDigits = inputText.match(digitRegex);
+
+            // Вивести результат
+            displayResult(foundDigits);
+        }
+
+        function displayResult(result) {
+            var resultContainer = document.getElementById('result');
+
+            // Очистити попередні результати
+            resultContainer.innerHTML = '';
+
+            if (result && result.length > 0) {
+                // Вивести знайдені цифри
+                resultContainer.innerHTML = '<p>Found digits: ' + result.join(', ') + '</p>';
+            } else {
+                // Вивести повідомлення, якщо цифри не знайдено
+                resultContainer.innerHTML = '<p>No digits found.</p>';
+            }
+        }
+        //для останього завдання
+        function performArrayTask() {
+            // Заданий розмір масиву
+            var N = 5;
+
+            // Створення одновимірного масиву A розміру 2N
+            var arrayA = [];
+            for (var i = 0; i < 2 * N; i++) {
+                arrayA.push(i + 1);
+            }
+
+            // Побудова масиву B згідно з завданням
+            var arrayB = buildArrayB(arrayA);
+
+            // Виведення результату у textarea
+            displayResult(arrayA, arrayB);
+        }
+
+        function buildArrayB(arrayA) {
+            var N = arrayA.length / 2;
+
+            // Створення масиву B розміру 2N
+            var arrayB = [];
+
+            // Розміщення у першій половині масиву B другу половину масиву A
+            arrayB = arrayB.concat(arrayA.slice(N));
+
+            // Розміщення у другій половині масиву B першу половину масиву A
+            arrayB = arrayB.concat(arrayA.slice(0, N));
+
+            return arrayB;
+        }
+
+        function displayResult(arrayA, arrayB) {
+            var resultTextarea = document.getElementById('resultTextarea');
+
+            // Очистити попередні результати
+            resultTextarea.value = '';
+
+            // Вивести результат
+            resultTextarea.value += 'Array A: ' + arrayA.join(', ') + '\n';
+            resultTextarea.value += 'Array B: ' + arrayB.join(', ');
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>laba 6</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="drawingCanvas" width="700" height="600"></canvas>
+    <script>
+        var canvas, context;
+        var radius = 115;
+        var direction = -1;
+        var canvas, context;
+        window.onload = function() {
+            canvas = document.getElementById("drawingCanvas");
+            context = canvas.getContext("2d");
+
+            function draw() {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                // осі та підписи
+                context.beginPath();
+                context.moveTo(10, 200);
+                context.lineTo(580, 200);
+                context.lineTo(570, 195);
+                context.moveTo(580, 200);
+                context.lineTo(570, 205);
+                context.moveTo(200, 20);
+                context.lineTo(200, 390);
+                context.moveTo(200, 20);
+                context.lineTo(205, 25);
+                context.moveTo(200, 20);
+                context.lineTo(195, 25);
+                context.stroke();
+
+                // Рисуємо прямокутники, коло, еліпс
+                context.fillStyle = "blue";
+                context.fillRect(95, 200, 60, 60);
+
+                context.fillStyle = "green";
+                context.fillRect(35, 260, 60, 60);
+
+                var gradient = context.createLinearGradient(0, 0, canvas.width, 0);
+                gradient.addColorStop(0.45, "red");
+                gradient.addColorStop(0.35, "green");
+                gradient.addColorStop(1, "yellow");
+                context.fillStyle = gradient;
+                context.fillRect(410, 90, 60, 60);
+
+                context.fillStyle = "purple";
+                context.fillRect(410, 260, 60, 60);
+
+                var gradient = context.createLinearGradient(0, 0, canvas.width, 0);
+                gradient.addColorStop(0.3, "white");
+                gradient.addColorStop(0.35, "green");
+                gradient.addColorStop(1, "blue");
+                context.fillStyle = gradient;
+                context.fillRect(245, 260, 60, 60);
+
+                var gradient = context.createLinearGradient(0, 0, canvas.width, 0);
+                gradient.addColorStop(0.3, "purple");
+                gradient.addColorStop(0.2, "green");
+                gradient.addColorStop(1, "blue");
+                // Встановлюємо градієнт як заливку прямокутника
+                context.fillStyle = gradient;
+                context.fillRect(200, 90, 120, 60);
+
+                context.beginPath();
+                context.arc(100, 145, 55, 0, 2 * Math.PI);
+                context.fillStyle = "black";
+                context.fill();
+                context.stroke();
+
+                
+                // Анімація зменшення розміру та повернення для синього кола
+                context.beginPath();
+                var gradient = context.createLinearGradient(0, 0, canvas.width, 0);
+                gradient.addColorStop(0.2, "green");
+                gradient.addColorStop(0.2, "grey");
+                gradient.addColorStop(1, "blue");
+                context.fillStyle = gradient;
+                context.arc(360, 207, radius, 0, 2 * Math.PI);
+                context.fill();
+                context.closePath();
+
+                radius += direction;
+                if(radius > 115 || radius < 90) {
+                    direction *= -1;
+                }
+
+                // Анімація обертання еліпса
+                context.beginPath();
+                context.ellipse(147, 292, 52, 32, (Date.now() / 1000) % (2 * Math.PI), 0, 2 * Math.PI);
+                context.fillStyle = "orange";
+                context.fill();
+                context.closePath();
+
+                // Анімація зміни кольору
+                var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'];
+                var colorIndex = Math.floor((Date.now() / 1000) % colors.length);
+                context.fillStyle = colors[colorIndex];
+                context.fillRect(95, 200, 60, 60);
+
+                colorIndex = (colorIndex + 1) % colors.length;
+                context.fillStyle = colors[colorIndex];
+                context.fillRect(35, 260, 60, 60)
+
+                // Анімація переміщення
+                var gradient = context.createLinearGradient(0, 0, canvas.width, 0);
+                gradient.addColorStop(0.3, "yellow");
+                gradient.addColorStop(0.2, "pink");
+                gradient.addColorStop(0.45, "red");
+                context.fillStyle = gradient;
+                context.fillRect(95 + Math.sin(Date.now() / 1000) * 40, 90, 60, 60);
+            }
+            setInterval(draw, 30);
+        };
+    </script>
+</body>
+</html>
